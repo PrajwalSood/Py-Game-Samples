@@ -1,7 +1,5 @@
 import os
 
-import os
-
 SCREENSIZE = (800, 600)
 fps = 60
 cwd = os.chdir('Puzzle')

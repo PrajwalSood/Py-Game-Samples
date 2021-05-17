@@ -112,7 +112,7 @@ def updateFrame(screen, obstacles, skier, score):
 
 def main():
 
-    
+    global score
     pygame.init()
     pygame.mixer.init()
     pygame.mixer.music.load(cfg.BGMPATH)
@@ -134,6 +134,7 @@ def main():
     clock = pygame.time.Clock()
     
     distance = 0
+    
     
     score = 0
     speed = [0, 6]
@@ -167,19 +168,20 @@ def main():
         for obstacle in obstacles:
             obstacle.move(distance)
         
-        hitted_obstacles = pygame.sprite.spritecollide(skier, obstacles, True) 
+        hitted_obstacles = pygame.sprite.spritecollide(skier, obstacles, False) 
         
         if hitted_obstacles:
-            if hitted_obstacles[0].attribute =="tree" and not hitted_obstacles[0].passed:
+
+            if hitted_obstacles[0].attribute =="tree" and hitted_obstacles[0].passed:
                 score -= 50
                 skier.setFall()
                 updateFrame(screen, obstacles, skier, score)
                 pygame.time.delay(1000)
                 skier.setForward()
                 speed = [0, 6]
-                hitted_obstacles[0].passed =True
+                hitted_obstacles[0].passed = False
             
-            elif hitted_obstacles[0].attribute =="flag" and not hitted_obstacles[0].passed:
+            elif hitted_obstacles[0].attribute =="flag" and hitted_obstacles[0].passed:
                 score += 10
                 obstacles.remove(hitted_obstacles[0])
             
@@ -189,4 +191,5 @@ def main():
         clock.tick(cfg.FPS)
 
 if __name__ == '__main__':
+    score = 0
     main()
